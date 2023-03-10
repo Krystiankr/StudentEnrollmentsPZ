@@ -1,0 +1,22 @@
+{% load static %}
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <ul class="nav navbar-nav">
+        <li class=""><a class="navbar-brand" href="{% url 'login' %}">Home</a></li>
+        <li class=""><a href="{% url 'login' %}">default</a></li>
+        <li class=""><a href="{% url 'login' %}">default</a></li>
+        <li class=""><a href="{% url 'login' %}">default</a></li>
+        <li class=""><a href="{% url 'login' %}">default</a></li>
+        <li class=""><a href="{% url 'login' %}">default</a></li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'login' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</nav>
+<!--
+-->

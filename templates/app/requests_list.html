@@ -1,0 +1,5 @@
+<ul>
+    {% for request in requests %}
+        <li>{{ request.sender.name }} wants to switch to group {{ request.recipient.group.name }} <button>Accept</button> <button>Reject</button></li>
+    {% endfor %}
+</ul>
