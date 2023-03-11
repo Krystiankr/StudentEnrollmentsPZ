@@ -1,67 +1,32 @@
-# views.py
-from django.views import View
 from django.shortcuts import render
+from django.views import View
 
-class LoginView(View):
+from .models import Grupy, Studenci, CzatOgolny, CzatPrywatny
+
+from django.conf import settings
+
+
+class IndexView(View):
     def get(self, request):
-        # Logowanie bez rejestracji
-        return render(request, 'app/logowanie.html')
+        studenci = Studenci.objects.all()  # query all students
+        print(studenci.query)
+        context = {'studenci': studenci}   # create a dictionary with the query results
+        return render(request, 'app/index.html', context)  #
+def grupy(request):
+    grupy = Grupy.objects.all()
+    return render(request, 'grupy.html', {'grupy': grupy})
 
-class ChangePasswordView(View):
-    def post(self, request):
-        # Zmiana hasła
-        pass
 
-class ChangeGroupView(View):
-    def post(self, request):
-        # Zamiana grup
-        pass
+def studenci(request):
+    studenci = Studenci.objects.all()
+    return render(request, 'studenci.html', {'studenci': studenci})
 
-class RequestsListView(View):
-    def get(self, request):
-        # Lista z requestami
-        pass
 
-class ChatView(View):
-    def get(self, request):
-        # Czat ogólny
-        pass
+def czat_ogolny(request):
+    wiadomosci = CzatOgolny.objects.all()
+    return render(request, 'czat_ogolny.html', {'wiadomosci': wiadomosci})
 
-class PrivateChatView(View):
-    def get(self, request):
-        # Czat prywatny
-        pass
 
-class NotificationView(View):
-    def get(self, request):
-        # Dzwoneczek powiadomień
-        pass
-
-class PrintView(View):
-    def get(self, request):
-        # Drukowanie listy grup-studentów do PDF
-        pass
-
-class DeleteStudentView(View):
-    def post(self, request):
-        # Usunięcie studenta przez Dziekana
-        pass
-
-class AcceptRequestView(View):
-    def post(self, request):
-        # Akceptacja zamiany
-class RejectRequestView(View):
-    def post(self, request):
-
-# Odrzucenie zamiany
-        pass
-
-class MoveStudentView(View):
-    def post(self, request):
-
-# Przemieszczenie studenta między grupami
-        pass
-
-class ConfirmActionView(View):
-    def get(self, request):
-        pass
+def czat_prywatny(request):
+    wiadomosci = CzatPrywatny.objects.all()
+    return render(request, 'czat_prywatny.html', {'wiadomosci': wiadomosci})

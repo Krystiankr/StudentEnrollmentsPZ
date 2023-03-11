@@ -1,31 +1,38 @@
-# models.py
 from django.db import models
 
-class Supervisor(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField()
-    password = models.CharField(max_length=50)
 
-class Group(models.Model):
-    name = models.CharField(max_length=50)
-    students = models.ManyToManyField("Student", blank=True, related_name='groups')
-    supervisor = models.ForeignKey(
-        "Supervisor", on_delete=models.CASCADE, blank=True, null=True
-    )
+class Grupy(models.Model):
+    ID = models.IntegerField(primary_key=True)
+    Nazwa = models.CharField(max_length=32)
 
 
-class Student(models.Model):
-    name = models.CharField(max_length=50)
-    email = models.EmailField()
-    password = models.CharField(max_length=50)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
-    requests = models.ManyToManyField("Request", blank=True, related_name='students')
+class Studenci(models.Model):
+    ID_studenta = models.IntegerField(primary_key=True)
+    imie = models.CharField(max_length=50)
+    nazwisko = models.CharField(max_length=50)
+    mail = models.CharField(max_length=50)
+    ID_grupy = models.ForeignKey(Grupy, on_delete=models.CASCADE)
+
+
+class CzatOgolny(models.Model):
+    ID_wiadomosci = models.IntegerField(primary_key=True)
+    tresc_wiadomosci = models.CharField(max_length=255, null=True)
+    data_wiadomosci = models.DateField(null=True)
+    ID_studenta = models.ForeignKey(Studenci, on_delete=models.CASCADE)
+
+
+class CzatPrywatny(models.Model):
+    ID_wiadomosci = models.IntegerField(primary_key=True)
+    tresc_wiadomosci = models.CharField(max_length=255, null=True)
+    data_wiadomosci = models.DateField(null=True)
+    ID_studenta_nadawcy = models.ForeignKey(Studenci, on_delete=models.CASCADE, related_name='nadawca')
+    ID_studenta_odbiorcy = models.ForeignKey(Studenci, on_delete=models.CASCADE, related_name='odbiorca')
 
 class Request(models.Model):
     sender = models.ForeignKey(
-        Student, on_delete=models.CASCADE, related_name="sender_requests"
+        Studenci, on_delete=models.CASCADE, related_name="sender_requests"
     )
     recipient = models.ForeignKey(
-        Student, on_delete=models.CASCADE, related_name="recipient_requests"
+        Studenci, on_delete=models.CASCADE, related_name="recipient_requests"
     )
     status = models.CharField(max_length=50)
