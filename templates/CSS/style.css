@@ -107,3 +107,57 @@
   float: right;
 }
 
+#groups{
+	width: 80%;
+	height: 90%;
+    overflow-x: auto;
+    white-space: nowrap;
+	float: left;
+	border-right: solid black 1px;
+}
+
+#content{
+	overflow: hidden;
+	
+}
+
+#allchat{
+	height: 90%;
+	overflow: hidden;
+	position: relative;
+}
+
+.chattitle{
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid black;
+}
+
+.grupa{
+	height: 90%;
+	border-left: 1px solid black;
+	float: left;
+}
+
+#grouptable{
+	height: 100%;
+}
+
+.chatbox{
+	overflow-y: scroll;
+	height: 90%
+}
+
+.sendbox{
+				position: absolute;
+                bottom: 0px;
+				border-top: 1px solid black;
+				width: 100%;
+}
+
+.sendmsg{
+	border: solid black 1px;
+}
+.join {
+	height: 10%;
+}
