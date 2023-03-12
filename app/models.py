@@ -5,6 +5,9 @@ class Grupy(models.Model):
     ID = models.IntegerField(primary_key=True)
     Nazwa = models.CharField(max_length=32)
 
+    def __str__(self):
+        return str(self.Nazwa)
+
 
 class Studenci(models.Model):
     ID_studenta = models.IntegerField(primary_key=True)
@@ -13,6 +16,8 @@ class Studenci(models.Model):
     mail = models.CharField(max_length=50)
     ID_grupy = models.ForeignKey(Grupy, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"[{self.ID_grupy}] {self.imie} {self.nazwisko}"
 
 class CzatOgolny(models.Model):
     ID_wiadomosci = models.IntegerField(primary_key=True)

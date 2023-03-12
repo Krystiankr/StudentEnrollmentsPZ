@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views import View
 
+from StudentEnrollmentsPZ.enums import SettingsEnum
 from .models import Grupy, Studenci, CzatOgolny, CzatPrywatny
-
 from django.conf import settings
 
 
@@ -25,7 +25,7 @@ class GroupsView(View):
     def get(self, request):
         groups = Grupy.objects.all()  # query all students
         print(groups.query)
-        context = {'groups': groups}   # create a dictionary with the query results
+        context = {'groups': groups, 'students_min': SettingsEnum.STUDENTS_MIN_THRESHOLD, 'students_max': SettingsEnum.STUDENTS_MAX_THRESHOLD}   # create a dictionary with the query results
         return render(request, 'app/groups.html', context)  #
 def grupy(request):
     grupy = Grupy.objects.all()
