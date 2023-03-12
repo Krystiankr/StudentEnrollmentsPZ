@@ -20,14 +20,14 @@ class Studenci(models.Model):
         return f"[{self.ID_grupy}] {self.imie} {self.nazwisko}"
 
 class CzatOgolny(models.Model):
-    ID_wiadomosci = models.IntegerField(primary_key=True)
+    ID_wiadomosci = models.AutoField(primary_key=True)
     tresc_wiadomosci = models.CharField(max_length=255, null=True)
     data_wiadomosci = models.DateField(null=True)
     ID_studenta = models.ForeignKey(Studenci, on_delete=models.CASCADE)
 
 
 class CzatPrywatny(models.Model):
-    ID_wiadomosci = models.IntegerField(primary_key=True)
+    ID_wiadomosci = models.AutoField(primary_key=True)
     tresc_wiadomosci = models.CharField(max_length=255, null=True)
     data_wiadomosci = models.DateField(null=True)
     ID_studenta_nadawcy = models.ForeignKey(Studenci, on_delete=models.CASCADE, related_name='nadawca')
