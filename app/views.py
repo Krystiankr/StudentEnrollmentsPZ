@@ -12,6 +12,21 @@ class IndexView(View):
         print(studenci.query)
         context = {'studenci': studenci}   # create a dictionary with the query results
         return render(request, 'app/index.html', context)  #
+
+
+class StudentsView(View):
+    def get(self, request):
+        studenci = Studenci.objects.all()  # query all students
+        print(studenci.query)
+        context = {'studenci': studenci}   # create a dictionary with the query results
+        return render(request, 'app/students.html', context)  #
+
+class GroupsView(View):
+    def get(self, request):
+        groups = Grupy.objects.all()  # query all students
+        print(groups.query)
+        context = {'groups': groups}   # create a dictionary with the query results
+        return render(request, 'app/groups.html', context)  #
 def grupy(request):
     grupy = Grupy.objects.all()
     return render(request, 'grupy.html', {'grupy': grupy})

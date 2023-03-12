@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Student list</title>
-</head>
-<body>
-    <h1>List of students</h1>
-    <ul>
-        {% for student in studenci %}
-            <li>{{ student.imie }} {{ student.nazwisko }}</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>List of students</h1>
+<ul>
+    {% for student in studenci %}
+        <li>{{ student.imie }} {{ student.nazwisko }}</li>
+    {% endfor %}
+</ul>
+    <div class="v1_12">
+    <div class="v1_11">
+        <div class="v1_3"></div>
+        <div class="v1_7"></div>
+        <div class="v1_9"></div>
+        <span class="v1_6">Students</span>
+        <span class="v1_8">Grupa 1</span>
+        <span class="v1_10">Grupa 2</span>
+    </div>
+    </div>
+</div>
+{% endblock %}

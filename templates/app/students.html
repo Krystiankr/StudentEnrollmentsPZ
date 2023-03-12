@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet"/>
+    <link href="{% static 'CSS/students.css' %}" rel="stylesheet"/>
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="v1_12">
+    <div class="v1_11">
+        <div class="v1_3"></div>
+        <div class="v1_7"></div>
+        <div class="v1_9"></div>
+        <span class="v1_6">Students</span>
+        <span class="v1_8">Grupa 1</span>
+            <ul>
+                {% for student in studenci %}
+                    <li>{{ student.imie }} {{ student.nazwisko }}</li>
+                {% endfor %}
+            </ul>
+        <span class="v1_10">Grupa 2</span>
+    </div>
+</div>
+</body>
+</html>
