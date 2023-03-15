@@ -1,8 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class Grupy(models.Model):
-    ID = models.IntegerField(primary_key=True)
+    ID = models.AutoField(primary_key=True)
     Nazwa = models.CharField(max_length=32)
 
     def __str__(self):
@@ -10,11 +11,11 @@ class Grupy(models.Model):
 
 
 class Studenci(models.Model):
-    ID_studenta = models.IntegerField(primary_key=True)
+    ID_studenta = models.AutoField(primary_key=True)
     imie = models.CharField(max_length=50)
     nazwisko = models.CharField(max_length=50)
-    mail = models.CharField(max_length=50)
-    ID_grupy = models.ForeignKey(Grupy, on_delete=models.CASCADE)
+    mail = models.CharField(max_length=50, unique=True)
+    ID_grupy = models.ForeignKey(Grupy, on_delete=models.CASCADE, related_name='id_grupy')
 
     def __str__(self):
         return f"[{self.ID_grupy}] {self.imie} {self.nazwisko}"

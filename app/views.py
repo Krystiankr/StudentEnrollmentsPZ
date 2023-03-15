@@ -1,13 +1,54 @@
 from datetime import date
 
 from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout as auth_logout
 from django.views import View
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 from StudentEnrollmentsPZ.enums import SettingsEnum
-from .forms import CzatOgolnyForm
+from .forms import CzatOgolnyForm, CreateUserForm, LoginForm
 from .models import Grupy, Studenci, CzatOgolny, CzatPrywatny
 from django.conf import settings
 
+class RegisterView(View):
+    def get(self, request):
+        form = CreateUserForm()
+        context = {'form': form}
+        return render(request, 'app/register.html', context)
+
+    def post(self, request):
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print("form save..")
+        context = {'form': form}
+        return render(request, 'app/register.html', context)
+
+class LoginView(View):
+    def post(self, request):
+        form = LoginForm(request.POST)
+        print(request.POST)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(username, password)
+        user = authenticate(request, username=username, password=password)
+        print("auth..")
+        if user is not None:
+            print("ok..")
+            login(request, user)
+            return redirect('index')
+        else:
+            print(f"nie ok err:{form.errors}")
+            return render(request, 'accounts/login.html', {'error': 'Login lub hasło nieprawidłowe.', 'form': form})
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'accounts/login.html', {'form': form})
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'app/logowanie.html'
+
+class ProfileLogout(LoginRequiredMixin, TemplateView):
+    template_name = 'app/index.html'
 
 class IndexView(View):
     def get(self, request):
