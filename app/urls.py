@@ -4,7 +4,7 @@ from django.urls import path
 
 from app.forms import LoginForm
 from app.views import IndexView, StudentsView, GroupsView, send_message, RegisterView, ProfileView, ProfileLogout, \
-    LoginView
+    LoginView, ChatMain, ChatPrivate
 
 urlpatterns = [
     path("", IndexView.as_view(), name='index'),
@@ -14,5 +14,7 @@ urlpatterns = [
     path("groups", GroupsView.as_view(), name='groups'),
     path('login/', LoginView.as_view(), name='login'),
     path("logout/", ProfileLogout.as_view(), name='logout'),
-    path("register", RegisterView.as_view(), name='groups'),
+    path("register", RegisterView.as_view(), name='register'),
+    path("chat_main", ChatMain.as_view(), name='chat_main'),
+    path("chat_private", ChatPrivate.as_view(), name='chat_private'),
 ]

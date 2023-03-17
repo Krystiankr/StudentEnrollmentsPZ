@@ -8,10 +8,13 @@
       <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+      {{ error }}
+
         <button type="submit" class="btn btn-primary btn-block">Login</button>
       </form>
+        <a href="{% url 'register' %}">Zarejestruj się</a><br>
+
     </div>
-      {{ error }}
   </div>
 </div>
 {% endblock %}

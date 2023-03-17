@@ -20,6 +20,14 @@ class Studenci(models.Model):
     def __str__(self):
         return f"[{self.ID_grupy}] {self.imie} {self.nazwisko}"
 
+class Transfer(models.Model):
+    ID_transfer = models.AutoField(primary_key=True)
+    requester_student_ID = models.ForeignKey(Studenci, on_delete=models.CASCADE, related_name='requested_transfers')
+    exchanger_student_ID = models.ForeignKey(Studenci, on_delete=models.CASCADE, related_name='exchanged_transfers')
+    approved = models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.ID_transfer} ({self.requester_student_ID} - {self.exchanger_student_ID})"
+
 class CzatOgolny(models.Model):
     ID_wiadomosci = models.AutoField(primary_key=True)
     tresc_wiadomosci = models.CharField(max_length=255, null=True)
