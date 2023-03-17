@@ -3,13 +3,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import CzatOgolny
+from .models import CzatOgolny, Studenci
 
 
 class CzatOgolnyForm(forms.ModelForm):
     class Meta:
         model = CzatOgolny
-        fields = ['tresc_wiadomosci']
+        fields = ["tresc_wiadomosci"]
 
 
 class NewUserForm(UserCreationForm):
@@ -17,19 +17,28 @@ class NewUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ("username", "email", "password1", "password2")
+        fields = ("first_name", "last_name", "email", "password1", "password2")
 
     def save(self, commit=True):
         user = super(NewUserForm, self).save(commit=False)
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data["email"]
+        user.username = (
+            f'{self.cleaned_data["first_name"]}.{self.cleaned_data["last_name"]}'
+        )
         if commit:
             user.save()
+        student = Studenci(user=user, imie=self.cleaned_data["first_name"], nazwisko=self.cleaned_data["last_name"])
+        student.save()
         return user
 
-class CreateUserForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    email = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     del self.fields['username']
+    #

@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "mathfilters",
-    "app"
+    "app",
 ]
 
 MIDDLEWARE = [
@@ -56,8 +56,7 @@ ROOT_URLCONF = "StudentEnrollmentsPZ.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -113,8 +112,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = '/templates/'
-STATICFILES_DIRS = [BASE_DIR / 'templates']
+STATIC_URL = "/templates/"
+STATICFILES_DIRS = [BASE_DIR / "templates"]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

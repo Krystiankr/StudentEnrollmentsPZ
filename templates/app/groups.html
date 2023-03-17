@@ -1,97 +1,145 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load mathfilters %}
 {% block content %}
-    <div class="row">
-    <div class="col-md-9">
-        <div class="wrapper">
-            {% for group in groups %}
-                <div class="item col-md-6">
-                    <div class="tablespace">
-                        <h2>Grupa {{ group.Nazwa }} ({{ group.id_grupy.count }}/{{ students_max.value }})</h2>
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Imię</th>
-                                <th>Nazwisko</th>
-                                <th>Zamiana</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for student in group.id_grupy.all %}
-                                <tr>
-                                    <td>{{ student.ID_studenta }} </td>
-                                    <td>{{ student.imie }}</td>
-                                    <td>{{ student.nazwisko }}</td>
-                                <td>
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="requester_student_ID" value="{{ student.ID_studenta }}">
-                                    <input type="hidden" name="exchanger_student_ID" value="{{ student.ID_studenta }}">
-                                    <button type="submit" class="btn btn-primary" name="transfer_form" value="transfer_form">Zamień</button>
-                                </form>
-                                </td>
-                                </tr>
-                            {% endfor %}
-
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <button type="button" class="btn btn-primary {% if not user.is_authenticated %}disabled{% endif %}" data-toggle="modal"
-                            data-target="#transferModal{{ student.id }}">
-                        Dołącz do grupy
-                    </button>
-                    {% if group.studenci_set.count < students_min.value %}
-                        <u><p>Niepełna grupa!</p></u><br>
-                        <i>Brakuje {{ students_min.value|sub:group.studenci_set.count }} studentów do utworzenia
-                            grupy.</i>
-
-
-                    {% endif %}
-
-
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-        <h2>Chat Information</h2>
-
-    <div class="col-md-3 msg_history">
-        {% for message in chat_messages %}
-            {% if message.ID_studenta.ID_studenta == 22 %}
-             <div class="outgoing_msg">
-                <div class="sent_msg">
-                    <p>{{ message.tresc_wiadomosci }}</p>
-                    <span class="time_date">{{message.data_wiadomosci}}</span></div>
+<div class="row">
+   <div class="col-md-9">
+      <div class="wrapper">
+         {% for group in groups %}
+         <div class="item col-md-6">
+            <div class="tablespace">
+               <h2>Grupa {{ group.Nazwa }} ({{ group.id_grupy.count }}/{{ students_max.value }})</h2>
+               {% if not user.is_authenticated or group.id_grupy.count >= students_max.value %}
+               <button type="button" class="btn btn-primary disabled" disabled>Dołącz do grupy</button>
+               {% elif group.id_grupy.count < students_min.value %}
+               <button type="button" class="btn btn-primary disabled" disabled>Dołącz do grupy (za mało studentów)</button>
+               {% else %}
+                   <form method="POST">
+                     {% csrf_token %}
+                       <input type="hidden" name="group_id" value="{{ group.ID }}">
+                       <button type="submit" class="btn btn-primary" name="transfer_form" value="join_to_group" data-toggle="modal" data-target="#transferModal{{ student.id }}">Dołącz do grup2y</button>
+                   </form>
+               {% endif %}
+               <table class="table table-striped">
+                  <thead class="thead-dark">
+                     <tr>
+                        <th>ID</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Zamiana</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for student in group.id_grupy.all %}
+                     <tr>
+                        <td>{{ student.ID_studenta }}</td>
+                        <td>{{ student.imie }}</td>
+                        <td>{{ student.nazwisko }}</td>
+                        <td>
+                           <form method="post">
+                              {% csrf_token %}
+                              <input type="hidden" name="requester_student_ID" value="{{ user.id }}">
+                              <input type="hidden" name="exchanger_student_ID" value="{{ student.user.id }}">
+                              <button type="submit" class="btn btn-primary" name="transfer_form" value="transfer_form">Zamień</button>
+                           </form>
+                        </td>
+                     </tr>
+                     {% endfor %}
+                  </tbody>
+               </table>
             </div>
-
-            {% else %}
-
-                <div class="incoming_msg">
-                <div class="incoming_msg_img"><img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                </div>
-                <div class="received_msg">
-                    <b>{{ message.ID_studenta.imie }} {{ message.ID_studenta.nazwisko }}</b>
-                    <div class="received_withd_msg">
-                        <p>{{ message.tresc_wiadomosci }}</p>
-                        <span class="time_date">{{message.data_wiadomosci}}</span></div>
-                </div>
-                </div>
+            {% if group.studenci_set.count < students_min.value %}
+            <u>
+               <p>Niepełna grupa!</p>
+            </u>
+            <br>
+            <i>Brakuje {{ students_min.value|sub:group.studenci_set.count }} studentów do utworzenia
+            grupy.</i>
             {% endif %}
-        {% endfor %}
-
-        </div>
-     <p>Insert chat information here</p>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form_as_p }}
-            <div class="input-group">
-                {{ form.tresc_wiadomosci }}
-                <input type="text" name="tresc_wiadomosci" class="form-control" id="exampleFormControlInput1">
-                <button type="submit" class="btn btn-primary">Send</button>
-            </div>
-        </form>
-        <p>{{ messages }}</p>
-    </div>
+         </div>
+         {% endfor %}
+      </div>
+   </div>
+   <h2>Czekające na akceptację</h2>
+     <p><b>Grupa </b>{{ my_group_nr }}</p>
+   <div class="col-md-3 msg_history">
+      <table class="table table-striped">
+         <thead>
+            <tr>
+               <th>Wnioskujący</th>
+               <th>___</th>
+               <th>Zamiennik</th>
+               <th>Wybór</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% if transfers %}
+            {% for transfer in transfers %}
+            <tr>
+               <td>{{ transfer.requester_student_ID.imie }} {{ transfer.requester_student_ID.nazwisko }}</td>
+               <td><img class="icons" src="{% static 'icons/exchange.svg' %}" alt="exchange"/> </td>
+               <td>{{ transfer.exchanger_student_ID.imie }} {{ transfer.exchanger_student_ID.nazwisko }}</td>
+               <td>
+                  <form method="POST" >
+                     {% csrf_token %}
+                     <input type="hidden" name="transfer_id" value="{{ transfer.ID_transfer }}">
+                     <div class="btn-group" role="group" aria-label="Transfer actions">
+                          {% if user.is_staff %}
+                        <button type="submit" name="transfer_form" value="approve_form"><img class="icons" src="{% static 'icons/accept.png' %}" alt="accept"/></button>
+                        <button type="button" name="transfer_form" value="approve_form" data-toggle="modal" data-target="#rejectModal{{ transfer.ID_transfer }}"><img class="icons" src="{% static 'icons/reject.png' %}" alt="accept"/></button>
+                         {% else %}
+                              <img class="icons" src="{% static 'icons/disabled.svg' %}" alt="accept"/>
+                         {% endif %}
+                     </div>
+                     <div class="modal fade" id="rejectModal{{ transfer.ID_transfer }}" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel{{ transfer.ID_transfer }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="rejectModalLabel{{ transfer.ID_transfer }}">Odrzucenie zamiany: {{ transfer.ID_transfer }}</h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                                 </button>
+                              </div>
+                              <div class="modal-body">
+                                 <p>Czy chcesz odrzucić ten transfer?</p>
+                                 <button type="button" class="btn btn-secondary btn_exchange" data-dismiss="modal">Anuluj</button>
+                                 <button type="submit" name="transfer_form" value="reject_form"  class="btn btn-danger btn_exchange">Odrzuć</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </form>
+               </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <p>Brak wniosków o zamianie.</p>
+            {% endif %}
+         </tbody>
+      </table>
+      <h3>Zatwierdzone</h3>
+      <table class="table table-striped">
+         <thead>
+            <tr>
+               <th>Wnioskujący</th>
+               <th>Zamiennik</th>
+               <th>Decyzja</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for transfer in transfer_approved %}
+            <tr>
+               <td>{{ transfer.requester_student_ID.imie }} {{ transfer.requester_student_ID.nazwisko }}</td>
+               <td>{{ transfer.exchanger_student_ID.imie }} {{ transfer.exchanger_student_ID.nazwisko }}</td>
+               {% if transfer.approved %}
+               <td><img class="icons" src="{% static 'icons/accept.png'  %}" alt="accept"/></td>
+               {% else %}
+               <td><img class="icons" src="{% static 'icons/reject.png'  %}" alt="accept"/></td>
+               {% endif %}
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+</div>
 {% endblock %}

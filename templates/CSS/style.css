@@ -19,7 +19,17 @@ border-color: transparent;
 border-color: transparent;
 box-shadow: inset 0px 0px 0px 1px transparent;
 }
+.btn_exchange{
+    max-width: 150px;
+}
 
+.icons {
+    width: 40px;
+    height: 40px;
+    margin-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 2px;
+}
 .badge-dot {
 border-radius: 50%;
 height: 10px;
@@ -150,7 +160,7 @@ margin-top: -.75rem;
 
 #content{
 	overflow: hidden;
-	
+
 }
 
 #allchat{
@@ -325,6 +335,5 @@ img{ max-width:100%;}
 }
 .messaging { padding: 0 0 50px 0;}
 .msg_history {
-  height: 516px;
   overflow-y: auto;
 }
