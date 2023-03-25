@@ -1,19 +1,25 @@
 {% load static %}
 
 <nav class="navbar navbar-default navbar-fixed-top">
+    {% if user.is_authenticated %}
     <ul class="nav navbar-nav">
-        <li class=""><a class="navbar-brand" href="{% url 'index' %}">Home</a></li>
+        {% if request.user.is_staff %}
+        <li class=""><a href="{% url 'index' %}">Lista studentów</a></li>
+        {% endif %}
         <li class=""><a href="{% url 'groups' %}">Grupy</a></li>
         <li class=""><a href="{% url 'chat_main' %}">Chat ogólny</a></li>
         <li class=""><a href="{% url 'chat_private' %}">Chat prywatny</a></li>
     </ul>
-    <ul class="nav navbar-nav navbar-right"><p class="navbar-text">Zalogowano: {{ user.username }}</p>
-    </ul>
+
+    <ul class="nav navbar-nav navbar-right"><p class="navbar-text">Zalogowano: {{ user.username }}</p></ul>
+    {% endif %}
     <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-            <li><a href="{% url 'logout' %}">Logout</a></li>
+
+            <li><a href="{% url 'logout' %}">Wyloguj</a></li>
+
         {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'login' %}">Zaloguj</a></li>
         {% endif %}
     </ul>
 </nav>

@@ -17,7 +17,7 @@
                    <form method="POST">
                      {% csrf_token %}
                        <input type="hidden" name="group_id" value="{{ group.ID }}">
-                       <button type="submit" class="btn btn-primary" name="transfer_form" value="join_to_group" data-toggle="modal" data-target="#transferModal{{ student.id }}">Dołącz do grup2y</button>
+                       <button type="submit" class="btn btn-primary" name="transfer_form" value="join_to_group" data-toggle="modal" data-target="#transferModal{{ student.id }}">Dołącz do grupy</button>
                    </form>
                {% endif %}
                <table class="table table-striped">
@@ -59,10 +59,13 @@
          </div>
          {% endfor %}
       </div>
+   <div class="col-md-12">
+      <a href="{% url 'group_report' %}" class="btn btn-primary" role="button">Pobierz raport (PDF)</a>
+   </div>
    </div>
    <h2>Czekające na akceptację</h2>
      <p><b>Grupa </b>{{ my_group_nr }}</p>
-   <div class="col-md-3 msg_history">
+   <div class="col-md-3 msg_history2">
       <table class="table table-striped">
          <thead>
             <tr>
