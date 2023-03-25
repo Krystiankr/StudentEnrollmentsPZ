@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
+from app import views
 from app.forms import LoginForm
 from app.views import (
     IndexView,
@@ -27,4 +28,5 @@ urlpatterns = [
     path("register", RegisterView.as_view(), name="register"),
     path("chat_main", ChatMain.as_view(), name="chat_main"),
     path("chat_private", ChatPrivate.as_view(), name="chat_private"),
+    path("group_report/", views.group_report, name="group_report"),
 ]

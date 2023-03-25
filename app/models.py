@@ -15,13 +15,13 @@ class Studenci(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     imie = models.CharField(max_length=50)
     nazwisko = models.CharField(max_length=50)
-    mail = models.CharField(max_length=50, unique=True)
+    mail = models.CharField(max_length=50, unique=False)
     ID_grupy = models.ForeignKey(
         Grupy, on_delete=models.CASCADE, related_name="id_grupy", null=True
     )
 
     def __str__(self):
-        return f"[{self.ID_grupy}] {self.imie} {self.nazwisko}"
+        return f"{self.ID_studenta} [{self.ID_grupy}] {self.imie} {self.nazwisko}"
 
 
 class Transfer(models.Model):

@@ -27,7 +27,11 @@ class NewUserForm(UserCreationForm):
         )
         if commit:
             user.save()
-        student = Studenci(user=user, imie=self.cleaned_data["first_name"], nazwisko=self.cleaned_data["last_name"])
+        student = Studenci(
+            user=user,
+            imie=self.cleaned_data["first_name"],
+            nazwisko=self.cleaned_data["last_name"],
+        )
         student.save()
         return user
 
